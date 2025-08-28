@@ -1,653 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Arduino Learning Hub — Home (Index)</title>
-  <meta name="description" content="A deep, modern, and practical introduction to Arduino: boards, power, wiring, programming, protocols, and best practices." />
+  <meta charset="UTF-8">
+  <title>Advanced Math Assistant</title>
   <style>
-    :root {
-      --bg: #0b1217;
-      --card: #0f1720;
-      --muted: #b7c3cf;
-      --text: #e9eef3;
-      --brand: #00979d; /* Arduino teal */
-      --brand-2: #00c2c7;
-      --accent: #6ee7ff;
-      --code-bg: #0a0f14;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 16px;
-    }
-    [data-theme="light"] {
-      --bg: #f7fbff;
-      --card: #ffffff;
-      --muted: #3c4a59;
-      --text: #0f1720;
-      --brand: #00979d;
-      --brand-2: #00a7ac;
-      --accent: #007bff;
-      --code-bg: #0f1720;
-      --shadow: 0 10px 24px rgba(0,0,0,.08);
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
-
-    /* Top progress bar */
-    .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, var(--brand), var(--accent)); z-index: 9999; }
-
-    header.hero {
-      position: relative;
-      padding: 4.5rem 1.25rem 3rem;
-      background: radial-gradient(1200px 600px at 10% -10%, rgba(0, 151, 157, .25), transparent),
-                  radial-gradient(1000px 500px at 90% -10%, rgba(0, 194, 199, .22), transparent);
-      overflow: hidden;
+    .app {
+      background: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      width: 700px;
+      text-align: center;
+      backdrop-filter: blur(10px);
     }
-    .hero-inner { max-width: 1200px; margin: 0 auto; }
-    .badge { display: inline-block; padding: .35rem .6rem; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; font-size: .85rem; color: var(--muted); backdrop-filter: blur(6px); }
-    h1 { font-size: clamp(2rem, 4vw, 3rem); margin: .75rem 0 1rem; letter-spacing: .3px; }
-    .lead { font-size: clamp(1rem, 1.6vw, 1.2rem); color: var(--muted); max-width: 70ch; }
-
-    /* Navbar */
-    nav.nav {
-      position: sticky; top: 0; z-index: 999; backdrop-filter: blur(8px);
-      background: color-mix(in oklab, var(--bg) 80%, transparent);
-      border-bottom: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: .8rem 1rem; }
-    .brand { display: flex; align-items: center; gap: .6rem; font-weight: 700; color: var(--text); text-decoration: none; }
-    .brand .dot { width: 10px; height: 10px; border-radius: 3px; background: var(--brand); box-shadow: 0 0 16px var(--brand); }
-    .links a { color: var(--text); text-decoration: none; margin: 0 .6rem; font-weight: 600; opacity: .85; }
-    .links a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
-    .right { display: flex; align-items: center; gap: .6rem; }
-    .toggle { border: 1px solid color-mix(in oklab, var(--text) 15%, transparent); background: color-mix(in oklab, var(--bg) 70%, transparent); color: var(--text); padding: .45rem .7rem; border-radius: 12px; cursor: pointer; }
-
-    main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem 4rem; }
-
-    .callout { display: grid; grid-template-columns: 1fr; gap: 1rem; background: var(--card); border: 1px solid color-mix(in oklab, var(--text) 10%, transparent); padding: 1.25rem; border-radius: var(--radius); box-shadow: var(--shadow); }
-    .cta-buttons { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .5rem; }
-    .btn { display: inline-flex; align-items: center; gap: .5rem; border: 1px solid color-mix(in oklab, var(--text) 15%, transparent); padding: .6rem .9rem; border-radius: 12px; text-decoration: none; color: var(--text); font-weight: 600; }
-    .btn.primary { background: linear-gradient(90deg, var(--brand), var(--brand-2)); border: none; color: white; }
-
-    .grid { display: grid; gap: 1.25rem; }
-    @media (min-width: 960px) { .grid-2 { grid-template-columns: 1.1fr .9fr; } .grid-3 { grid-template-columns: repeat(3, 1fr); } }
-
-    section.card { background: var(--card); padding: 1.25rem 1.25rem; border-radius: var(--radius); border: 1px solid color-mix(in oklab, var(--text) 10%, transparent); box-shadow: var(--shadow); }
-    section.card h2 { margin-top: 0; letter-spacing: .2px; }
-    .muted { color: var(--muted); }
-
-    .toc { background: linear-gradient( to right, color-mix(in oklab, var(--brand) 25%, transparent), transparent ); border: 1px solid color-mix(in oklab, var(--text) 10%, transparent); padding: 1rem; border-radius: 12px; }
-    .toc a { color: var(--text); text-decoration: none; display: inline-block; margin: .25rem .8rem .25rem 0; border-bottom: 1px dotted color-mix(in oklab, var(--text) 35%, transparent); }
-
-    pre { background: var(--code-bg); color: #d1e7ff; padding: 1rem; border-radius: 12px; overflow: auto; border: 1px solid rgba(255,255,255,.06); position: relative; }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: .95rem; }
-    .copy { position: absolute; top: .6rem; right: .6rem; font-size: .85rem; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: var(--text); padding: .25rem .5rem; border-radius: 8px; cursor: pointer; }
-
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border-bottom: 1px dashed color-mix(in oklab, var(--text) 12%, transparent); padding: .55rem .4rem; text-align: left; }
-    th { color: var(--muted); font-weight: 700; }
-    .table-note { font-size: .9rem; color: var(--muted); }
-
-    details { border: 1px solid color-mix(in oklab, var(--text) 10%, transparent); border-radius: 12px; padding: .85rem 1rem; background: color-mix(in oklab, var(--card) 85%, transparent); }
-    details + details { margin-top: .8rem; }
-    summary { cursor: pointer; font-weight: 700; }
-
-    .pill { display: inline-block; padding: .25rem .5rem; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--text) 18%, transparent); font-size: .8rem; color: var(--muted); }
-
-    .svg-wrap { background: var(--bg); border: 1px solid color-mix(in oklab, var(--text) 10%, transparent); border-radius: 12px; padding: .5rem; overflow: hidden; }
-
-    .footer { margin-top: 3rem; padding: 2rem 1rem; text-align: center; color: var(--muted); border-top: 1px solid color-mix(in oklab, var(--text) 10%, transparent); }
-    .top { position: fixed; right: 1rem; bottom: 1rem; border: none; border-radius: 50%; width: 44px; height: 44px; display: grid; place-items: center; background: linear-gradient(180deg, var(--brand), var(--brand-2)); color: white; cursor: pointer; box-shadow: var(--shadow); }
-
-    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas; background: color-mix(in oklab, var(--text) 10%, transparent); padding: .15rem .4rem; border-radius: 6px; border: 1px solid color-mix(in oklab, var(--text) 16%, transparent); }
+    select, input, button {
+      width: 90%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 12px;
+      border: none;
+      font-size: 1em;
+    }
+    select, input {
+      background: #eee;
+      color: #333;
+    }
+    button {
+      background: #00c6ff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0072ff;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 1.1em;
+      padding: 15px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 12px;
+      min-height: 40px;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+    label {
+      display: block;
+      margin: 5px 0 2px;
+      text-align: left;
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
-  <div class="progress" id="progress"></div>
-  <header class="hero" id="top">
-    <div class="hero-inner">
-      <span class="badge">Arduino Learning Hub · Index</span>
-      <h1>From Zero to Maker: A Deep, Modern Guide to Arduino</h1>
-      <p class="lead">This index page is your comprehensive on-ramp: understand what Arduino is, how it works, how to power and wire it safely, how to program it well, and how to avoid the classic pitfalls. Use the navigation to jump to boards, power, code, protocols, debugging, and best practices.</p>
-    </div>
-  </header>
+  <div class="app">
+    <h1>Advanced Math Assistant</h1>
+    
+    <select id="topic">
+      <option value="">-- Select Topic --</option>
+      <option value="alg1">Algebra 1</option>
+      <option value="alg2">Algebra 2</option>
+      <option value="geo">Geometry</option>
+    </select>
+    
+    <select id="operation">
+      <option value="">-- Select Operation --</option>
+    </select>
 
-  <nav class="nav" aria-label="Primary">
-    <div class="nav-inner">
-      <a class="brand" href="index.html" aria-label="Arduino Learning Hub Home">
-        <span class="dot" aria-hidden="true"></span>
-        Arduino Hub
-      </a>
-      <div class="links">
-        <a href="#what">What is Arduino?</a>
-        <a href="#boards">Boards</a>
-        <a href="#power">Power</a>
-        <a href="#programming">Programming</a>
-        <a href="#wiring">Wiring</a>
-        <a href="#protocols">Protocols</a>
-        <a href="#debugging">Debugging</a>
-        <a href="#best">Best Practices</a>
-        <a href="#next">Next</a>
-      </div>
-      <div class="right">
-        <button class="toggle" id="themeToggle" aria-label="Toggle color theme">🌙/☀️</button>
-      </div>
-    </div>
-  </nav>
+    <div id="inputs"></div>
+    <button id="solveBtn">Solve</button>
 
-  <main>
-    <section class="card toc" aria-labelledby="toc-h">
-      <h2 id="toc-h">Table of Contents</h2>
-      <p class="muted">Jump to a section on this page or explore the deeper pages via the navbar.</p>
-      <p>
-        <a href="#what">1. What is Arduino?</a>
-        <a href="#how">1.1 How Arduino Works</a>
-        <a href="#boards">2. Choosing a Board</a>
-        <a href="#power">3. Powering Arduino Safely</a>
-        <a href="#programming">4. Programming Basics</a>
-        <a href="#wiring">5. Breadboarding & First Circuit</a>
-        <a href="#protocols">6. I²C / SPI / UART</a>
-        <a href="#serial">7. Serial Monitor</a>
-        <a href="#interrupts">8. Timing & Interrupts</a>
-        <a href="#libraries">9. Libraries & IDEs</a>
-        <a href="#debugging">10. Troubleshooting</a>
-        <a href="#best">11. Best Practices</a>
-        <a href="#glossary">12. Glossary</a>
-        <a href="#next">13. What’s Next?</a>
-      </p>
-    </section>
-
-    <section id="what" class="card">
-      <h2>1) What is Arduino?</h2>
-      <p><strong>Arduino</strong> is an open‑source ecosystem of microcontroller <em>hardware</em> (boards), <em>software</em> (IDE, libraries), and an enormous community. You write C/C++ code that runs directly on the microcontroller to interact with the real world—LEDs, buttons, sensors, motors, and networks.</p>
-      <ul>
-        <li><span class="pill">Beginners</span> — Quick wins with examples and libraries.</li>
-        <li><span class="pill">Hobbyists</span> — Home automation, robotics, wearables.</li>
-        <li><span class="pill">Engineers</span> — Fast, low‑cost prototyping and education.</li>
-      </ul>
-    </section>
-
-    <section id="how" class="card grid grid-2">
-      <div>
-        <h2>1.1) How Arduino Works</h2>
-        <p>An Arduino board contains a <strong>microcontroller</strong> (e.g., ATmega328P) that executes your program from flash memory. You connect devices to its pins and read or control them in code.</p>
-        <ul>
-          <li><strong>Digital I/O:</strong> HIGH (5V/3.3V) or LOW (0V). <code>pinMode()</code>, <code>digitalWrite()</code>, <code>digitalRead()</code>.</li>
-          <li><strong>Analog Input:</strong> ADC converts voltages to numbers. Typical 10‑bit on Uno → 0–1023 for 0–5V.</li>
-          <li><strong>PWM Output:</strong> Fake “analog” via fast on/off. <code>analogWrite()</code> (on PWM‑capable pins).</li>
-          <li><strong>Clock & Timers:</strong> Timers power PWM, <code>millis()</code>, <code>tone()</code>, and advanced timing.</li>
-          <li><strong>Bootloader & USB:</strong> Lets the IDE upload compiled code via USB without a separate programmer.</li>
-        </ul>
-      </div>
-      <div class="callout">
-        <strong>FYI:</strong>
-        <ul>
-          <li>Uno pins are 5V‑tolerant; many modern boards are 3.3V only—always check before wiring.</li>
-          <li>Each I/O pin has current limits (typically 20–40 mA <em>max</em>). Use a transistor or driver for motors/strips.</li>
-          <li>“Analog” output via <code>analogWrite()</code> is PWM; true DAC exists on some boards (e.g., Due).</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="boards" class="card">
-      <h2>2) Choosing a Board</h2>
-      <p>Pick based on voltage, GPIO count, memory, and connectivity:</p>
-      <div class="grid grid-3">
-        <div class="callout">
-          <h3>Uno R3 / R4</h3>
-          <p>Great starter. R3 (ATmega328P, 5V). R4 (Renesas RA4M1, 5V logic, more RAM/flash, faster).</p>
-          <p class="muted">Pros: community, shields. Cons: limited RAM (R3).</p>
-        </div>
-        <div class="callout">
-          <h3>Nano (Classic / Every)</h3>
-          <p>Tiny footprint for breadboards. USB‑C on newer variants; ideal for compact builds.</p>
-        </div>
-        <div class="callout">
-          <h3>Mega 2560</h3>
-          <p>Tons of pins and serial ports for complex projects (3D printers, CNC).</p>
-        </div>
-        <div class="callout">
-          <h3>Due / MKR Series</h3>
-          <p>3.3V logic. Due adds DACs and lots of horsepower. MKR adds connectivity options.</p>
-        </div>
-        <div class="callout">
-          <h3>Portenta / Nicla</h3>
-          <p>Pro‑grade performance, AI at the edge, industrial features.</p>
-        </div>
-        <div class="callout">
-          <h3>ESP32/ESP8266 (Compatible)</h3>
-          <p>Wi‑Fi/BLE on board; programmed via Arduino core. 3.3V only.</p>
-        </div>
-      </div>
-
-      <h3>Spec Snapshot</h3>
-      <div class="table-wrap">
-        <table aria-label="Board comparison">
-          <thead>
-            <tr><th>Board</th><th>Voltage</th><th>MCU</th><th>Clock</th><th>Flash / RAM</th><th>GPIO</th><th>Notes</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Uno R3</td><td>5V</td><td>ATmega328P</td><td>16 MHz</td><td>32 KB / 2 KB</td><td>14D / 6A</td><td>Classic, shield‑friendly</td></tr>
-            <tr><td>Uno R4</td><td>5V</td><td>RA4M1</td><td>48 MHz</td><td>256 KB / 32 KB</td><td>14D / 6A</td><td>Modern, more power</td></tr>
-            <tr><td>Nano Every</td><td>5V</td><td>ATmega4809</td><td>20 MHz</td><td>48 KB / 6 KB</td><td>14D / 8A</td><td>Small, capable</td></tr>
-            <tr><td>Mega 2560</td><td>5V</td><td>ATmega2560</td><td>16 MHz</td><td>256 KB / 8 KB</td><td>54D / 16A</td><td>Lots of serial ports</td></tr>
-            <tr><td>Due</td><td>3.3V</td><td>SAM3X8E</td><td>84 MHz</td><td>512 KB / 96 KB</td><td>54D / 12A</td><td>Has DAC outputs</td></tr>
-            <tr><td>ESP32</td><td>3.3V</td><td>Xtensa dual-core</td><td>160–240 MHz</td><td>4 MB+ / 320 KB+</td><td>30–36</td><td>Wi‑Fi + BLE</td></tr>
-          </tbody>
-        </table>
-        <p class="table-note">Specs vary by vendor/revision. Always confirm voltage and pin mapping before wiring.</p>
-      </div>
-    </section>
-
-    <section id="power" class="card grid grid-2">
-      <div>
-        <h2>3) Powering Arduino Safely</h2>
-        <p>Reliable power prevents resets, USB brownouts, and hot regulators.</p>
-        <ul>
-          <li><strong>USB 5V:</strong> Best for development; limited current for peripherals.</li>
-          <li><strong>Barrel Jack / Vin:</strong> Feed 7–12V into onboard regulator (linear on many boards → heat!).</li>
-          <li><strong>5V / 3.3V Pins:</strong> <em>Output</em> from board’s regulator. Don’t back‑feed unless you know what you’re doing.</li>
-          <li><strong>Separate supplies:</strong> For motors/LED strips, use a dedicated PSU and <em>common ground</em>.</li>
-        </ul>
-        <details>
-          <summary>Resistor choice for LEDs</summary>
-          <p>Ohm’s Law: <code>R = (V<sub>source</sub> − V<sub>f</sub>) / I</code>. Example: (5V − 2V) / 0.01A ≈ 300Ω → pick 330Ω or 220–1kΩ.</p>
-        </details>
-        <details>
-          <summary>Driving motors/relays</summary>
-          <p>Use a transistor/MOSFET and a flyback diode on coils. Never power motors straight from a pin.</p>
-        </details>
-      </div>
-      <div>
-        <h3>Wiring the Classic LED (Inline SVG)</h3>
-        <div class="svg-wrap" role="img" aria-label="UNO pin 13 to resistor to LED to ground">
-          <svg viewBox="0 0 760 200" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
-            <rect x="0" y="0" width="760" height="200" fill="none" />
-            <circle cx="80" cy="100" r="24" fill="#00979d" />
-            <text x="80" y="105" fill="#fff" text-anchor="middle" font-family="monospace" font-size="14">D13</text>
-            <rect x="128" y="92" width="120" height="16" rx="8" fill="#74d1d5" />
-            <text x="188" y="87" fill="#74d1d5" font-family="monospace" font-size="12">≈330Ω</text>
-            <polygon points="280,84 320,100 280,116" fill="#ff5a5a" />
-            <rect x="320" y="84" width="8" height="32" fill="#ff5a5a" />
-            <line x1="328" y1="100" x2="620" y2="100" stroke="#9ad3d6" stroke-width="4" />
-            <circle cx="620" cy="100" r="20" fill="#5b7083" />
-            <text x="620" y="105" fill="#fff" text-anchor="middle" font-family="monospace" font-size="12">GND</text>
-            <text x="80" y="150" fill="#9fb3c8" font-family="monospace" font-size="13">Arduino UNO</text>
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <section id="programming" class="card">
-      <h2>4) Programming Basics (Arduino C++)</h2>
-      <p>Your sketch has two key functions: <code>setup()</code> runs once; <code>loop()</code> repeats forever. Use the IDE’s <strong>Library Manager</strong> for drivers and examples.</p>
-      <div class="grid grid-2">
-        <div>
-          <h3>Blink with Commentary</h3>
-          <pre><button class="copy" data-copy>Copy</button><code>// The built‑in LED is on pin LED_BUILTIN (13 on Uno)
-void setup() {
-  pinMode(LED_BUILTIN, OUTPUT); // configure GPIO as output
-}
-
-void loop() {
-  digitalWrite(LED_BUILTIN, HIGH); // LED on (5V)
-  delay(500);                      // wait 500 ms
-  digitalWrite(LED_BUILTIN, LOW);  // LED off (0V)
-  delay(500);                      // repeat
-}
-</code></pre>
-        </div>
-        <div>
-          <h3>Read a Potentiometer → Dim an LED</h3>
-          <pre><button class="copy" data-copy>Copy</button><code>const uint8_t POT = A0;        // analog input
-const uint8_t LED = 9;         // PWM capable pin on Uno
-
-void setup() {
-  pinMode(LED, OUTPUT);
-}
-
-void loop() {
-  int raw = analogRead(POT);        // 0..1023
-  int pwm = map(raw, 0, 1023, 0, 255);
-  analogWrite(LED, pwm);            // duty cycle 0..255
-}
-</code></pre>
-        </div>
-      </div>
-      <details>
-        <summary>Why PWM isn’t “real” analog</summary>
-        <p>PWM rapidly toggles a pin. After a low‑pass effect (LED persistence or RC), it <em>appears</em> dimmer/brighter. For true analog voltage, you need a DAC (Due, some MKR/Portenta) or an external DAC.</p>
-      </details>
-    </section>
-
-    <section id="wiring" class="card grid grid-2">
-      <div>
-        <h2>5) Breadboarding & First Circuit</h2>
-        <ol>
-          <li>Place a 5 mm LED on the breadboard (long leg = anode).</li>
-          <li>Connect a 220–330 Ω resistor from D13 to LED anode.</li>
-          <li>Connect LED cathode (short leg) to GND.</li>
-          <li>Upload the Blink sketch. If reversed, the LED won’t light—flip it.</li>
-        </ol>
-        <p class="muted">Tip: Use color‑coded jumpers (red = V+, black = GND). Keep wires short and flat to reduce noise and confusion.</p>
-      </div>
-      <div>
-        <h3>Debouncing a Button (no delay)</h3>
-        <pre><button class="copy" data-copy>Copy</button><code>const uint8_t BTN = 2;         // use pin 2 with pullup
-const uint8_t LED = 13;
-
-bool led = false;
-unsigned long last = 0;
-
-void setup(){
-  pinMode(BTN, INPUT_PULLUP);  // button to GND
-  pinMode(LED, OUTPUT);
-}
-
-void loop(){
-  static bool prev = HIGH;              // pulled up
-  bool cur = digitalRead(BTN);
-  unsigned long now = millis();
-  if (cur != prev && (now - last) > 25) { // 25 ms debounce
-    last = now; prev = cur;
-    if (cur == LOW) {                    // pressed
-      led = !led; digitalWrite(LED, led);
-    }
-  }
-}
-</code></pre>
-      </div>
-    </section>
-
-    <section id="protocols" class="card">
-      <h2>6) Talking to Devices: I²C / SPI / UART</h2>
-      <div class="grid grid-2">
-        <div>
-          <h3>I²C (Two‑wire)</h3>
-          <ul>
-            <li>Pins: <strong>SDA/SCL</strong> (A4/A5 on Uno). Needs 4.7k–10k pull‑ups to 5V/3.3V.</li>
-            <li>Addressed bus (7‑bit typical). Great for sensors and RTCs.</li>
-          </ul>
-          <pre><button class="copy" data-copy>Copy</button><code>#include &lt;Wire.h&gt;
-
-void setup(){
-  Wire.begin();              // join I²C as master
-  Serial.begin(115200);
-  Wire.beginTransmission(0x68); // e.g., RTC DS3231
-  Wire.write(0x00);              // register pointer
-  Wire.endTransmission();
-  Wire.requestFrom(0x68, 1);
-  if (Wire.available()) Serial.println(Wire.read(), HEX);
-}
-
-void loop(){ }
-</code></pre>
-        </div>
-        <div>
-          <h3>SPI (Fast & Full‑Duplex)</h3>
-          <ul>
-            <li>Pins: <strong>MOSI/MISO/SCK</strong> + CS per device. Very fast streams (displays, SD cards).</li>
-          </ul>
-          <pre><button class="copy" data-copy>Copy</button><code>#include &lt;SPI.h&gt;
-const int CS = 10; // chip select
-
-void setup(){
-  SPI.begin();
-  pinMode(CS, OUTPUT); digitalWrite(CS, HIGH);
-  SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
-  digitalWrite(CS, LOW);
-  SPI.transfer(0x9F); // Read JEDEC ID on many chips
-  digitalWrite(CS, HIGH);
-  SPI.endTransaction();
-}
-
-void loop(){ }
-</code></pre>
-        </div>
-      </div>
-      <details>
-        <summary>UART (Serial) basics</summary>
-        <p>TX→RX, RX→TX, and GND in common. Typical 9600–115200 baud. On Uno, pins 0/1 share the USB bridge—avoid collisions during upload.</p>
-      </details>
-    </section>
-
-    <section id="serial" class="card grid grid-2">
-      <div>
-        <h2>7) Serial Monitor & Debugging Prints</h2>
-        <p>Printing values to the Serial Monitor is the fastest way to debug logic and sensors.</p>
-        <pre><button class="copy" data-copy>Copy</button><code>#define DBG(...)  do{ Serial.print("[DBG] "); Serial.println(__VA_ARGS__); }while(0)
-
-void setup(){
-  Serial.begin(115200);
-  while(!Serial){} // needed on some boards (Native USB)
-  DBG("Boot OK");
-}
-
-void loop(){
-  static unsigned long t = 0; 
-  if (millis() - t > 1000) {
-    t = millis();
-    DBG(millis()); // print uptime every second
-  }
-}
-</code></pre>
-      </div>
-      <div>
-        <h3>Common Serial Pitfalls</h3>
-        <ul>
-          <li>Mismatched baud rate → unreadable gibberish.</li>
-          <li>Printing too much too fast → slows your loop.</li>
-          <li>On native USB boards, wait for the port to open.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="interrupts" class="card grid grid-2">
-      <div>
-        <h2>8) Timing & Interrupts</h2>
-        <p><code>millis()</code> enables <em>non‑blocking</em> timing; interrupts react instantly to events.</p>
-        <pre><button class="copy" data-copy>Copy</button><code>volatile bool tick = false;
-
-void onTick(){ tick = true; }
-
-void setup(){
-  attachInterrupt(digitalPinToInterrupt(2), onTick, RISING);
-}
-
-void loop(){
-  if (tick){
-    tick = false;
-    // handle event ASAP; keep ISR short
-  }
-}
-</code></pre>
-      </div>
-      <div>
-        <h3>Scheduling without delay()</h3>
-        <pre><button class="copy" data-copy>Copy</button><code>struct Task{ unsigned long iv; unsigned long last; void (*fn)(); };
-
-void ledBlink(){ digitalWrite(13, !digitalRead(13)); }
-void sample(){ /* read sensors */ }
-
-Task tasks[] = {
-  {500, 0, ledBlink},
-  {50,  0, sample},
-};
-
-void setup(){ pinMode(13, OUTPUT); }
-
-void loop(){
-  unsigned long now = millis();
-  for (auto &t : tasks){ if (now - t.last >= t.iv){ t.last = now; t.fn(); } }
-}
-</code></pre>
-      </div>
-    </section>
-
-    <section id="libraries" class="card grid grid-2">
-      <div>
-        <h2>9) Libraries & IDEs</h2>
-        <ul>
-          <li><strong>Arduino IDE 2.x:</strong> Easiest start; use <em>Library Manager</em> (Ctrl/Cmd+Shift+I) and <em>Board Manager</em>.</li>
-          <li><strong>VS Code + PlatformIO:</strong> Pro workflow, tasks, per‑project dependencies, CI.</li>
-          <li><strong>arduino‑cli:</strong> Scriptable installs, headless builds for CI servers.</li>
-        </ul>
-        <details>
-          <summary>Managing libraries safely</summary>
-          <ul>
-            <li>One library per folder under <code>Documents/Arduino/libraries</code>.</li>
-            <li>Avoid duplicate versions; the first in the search path wins.</li>
-            <li>Use library examples as known‑good wiring + code.</li>
-          </ul>
-        </details>
-      </div>
-      <div>
-        <h3>Project Skeleton (Modular)</h3>
-        <pre><button class="copy" data-copy>Copy</button><code>src/
-  main.ino
-  sensors.h
-  sensors.cpp
-  motor.h
-  motor.cpp
-
-// sensors.h
-#pragma once
-#include &lt;Arduino.h&gt;
-void sensorsInit();
-int readTemp();
-
-// sensors.cpp
-#include "sensors.h"
-void sensorsInit(){ /* pinMode, begin() calls */ }
-int readTemp(){ return analogRead(A0); }
-</code></pre>
-      </div>
-    </section>
-
-    <section id="debugging" class="card grid grid-2">
-      <div>
-        <h2>10) Troubleshooting Checklist</h2>
-        <ul>
-          <li>Tools → Board/Port match your device?</li>
-          <li>Power: correct voltage and a shared ground?</li>
-          <li>LED polarity, resistor value in range?</li>
-          <li>Sensors need pull‑ups? (I²C lines!)</li>
-          <li>Baud rate matches Serial Monitor?</li>
-          <li>Libraries/Examples verified first?</li>
-          <li>Use a multimeter: measure VCC and pin states.</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Reading Noisy Sensors (Smoothing)</h3>
-        <pre><button class="copy" data-copy>Copy</button><code>const uint8_t N=16; int buf[N]; uint8_t i=0;
-int smoothRead(uint8_t pin){
-  buf[i++] = analogRead(pin); if (i==N) i=0;
-  long sum=0; for (uint8_t k=0;k<N;k++) sum += buf[k];
-  return sum / N; // moving average
-}
-</code></pre>
-      </div>
-    </section>
-
-    <section id="best" class="card">
-      <h2>11) Best Practices</h2>
-      <ul>
-        <li><strong>Use constants & types:</strong> <code>const uint8_t</code> for pins; avoid magic numbers.</li>
-        <li><strong>Non‑blocking timing:</strong> Prefer <code>millis()</code> over <code>delay()</code> for responsiveness.</li>
-        <li><strong>State machines:</strong> Model behavior explicitly; easier to scale and debug.</li>
-        <li><strong>Isolate hardware:</strong> Wrap sensors/actuators behind functions or classes.</li>
-        <li><strong>Memory care:</strong> SRAM is scarce; store strings in flash via <code>F()</code> macro.</li>
-        <li><strong>Safety first:</strong> Drivers for motors, level shifting for 3.3V devices, fuses for batteries.</li>
-      </ul>
-      <details>
-        <summary>Minimal Finite‑State Machine (FSM) Example</summary>
-        <pre><button class="copy" data-copy>Copy</button><code>enum State { IDLE, HEATING, COOLING };
-State s = IDLE;
-
-void loop(){
-  int t = readTemp();
-  switch (s){
-    case IDLE:   if (t &lt; 20) s = HEATING; else if (t &gt; 28) s = COOLING; break;
-    case HEATING: if (t &gt;= 22) s = IDLE; break;
-    case COOLING: if (t &lt;= 26) s = IDLE; break;
-  }
-}
-</code></pre>
-      </details>
-    </section>
-
-    <section id="glossary" class="card">
-      <h2>12) Glossary</h2>
-      <p class="muted">Quick definitions you’ll see across Arduino docs:</p>
-      <ul>
-        <li><strong>GPIO</strong>: General‑Purpose Input/Output pins.</li>
-        <li><strong>PWM</strong>: Pulse‑Width Modulation; simulates analog output.</li>
-        <li><strong>ADC</strong>: Analog‑to‑Digital Converter; reads voltages as numbers.</li>
-        <li><strong>ISR</strong>: Interrupt Service Routine; runs on hardware events.</li>
-        <li><strong>Bootloader</strong>: Small program enabling USB uploads.</li>
-      </ul>
-    </section>
-
-    <section id="next" class="card">
-      <h2>13) What’s Next?</h2>
-      <p>Ready to go deeper? Continue your journey:</p>
-      <div class="cta-buttons">
-        <a class="btn primary" href="getting-started.html">Getting Started Guide</a>
-        <a class="btn" href="hardware.html">Board & Sensor Hardware</a>
-        <a class="btn" href="programming.html">Programming Techniques</a>
-        <a class="btn" href="projects.html">Project Walkthroughs</a>
-        <a class="btn" href="advanced.html">Advanced Topics</a>
-      </div>
-    </section>
-
-    <div class="footer">
-      &copy; 2025 Arduino Learning Hub — Index · Built for clarity and depth
-    </div>
-  </main>
-
-  <button class="top" id="toTop" title="Back to Top" aria-label="Back to Top">↑</button>
+    <div id="output">Results will appear here...</div>
+  </div>
 
   <script>
-    // Theme toggle with persistence
-    const root = document.documentElement;
-    const themeBtn = document.getElementById('themeToggle');
-    const saved = localStorage.getItem('theme');
-    if (saved) root.setAttribute('data-theme', saved);
-    themeBtn.addEventListener('click', () => {
-      const cur = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      root.setAttribute('data-theme', cur);
-      localStorage.setItem('theme', cur);
-    });
+    const topicSelect = document.getElementById("topic");
+    const operationSelect = document.getElementById("operation");
+    const inputsDiv = document.getElementById("inputs");
+    const outputDiv = document.getElementById("output");
 
-    // Copy buttons
-    document.querySelectorAll('[data-copy]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const code = btn.nextElementSibling.innerText;
-        navigator.clipboard.writeText(code).then(()=>{
-          const txt = btn.textContent;
-          btn.textContent = 'Copied';
-          setTimeout(()=>btn.textContent = txt, 1200);
-        });
-      });
-    });
-
-    // Back to top + progress bar
-    const toTop = document.getElementById('toTop');
-    const progress = document.getElementById('progress');
-    const onScroll = () => {
-      const y = window.scrollY;
-      toTop.style.display = y > 400 ? 'grid' : 'none';
-      const h = document.body.scrollHeight - window.innerHeight;
-      const p = (y / h) * 100; progress.style.width = p + '%';
+    // 🔹 Define operations
+    const operations = {
+      alg1: {
+        linear: {label:"Solve Linear (ax+b=0)", inputs:["a","b"]},
+        system: {label:"Solve 2x2 System", inputs:["a1","b1","c1","a2","b2","c2"]},
+        quadratic: {label:"Quadratic Formula", inputs:["a","b","c"]},
+        slope: {label:"Slope from Two Points", inputs:["x1","y1","x2","y2"]},
+        intercept: {label:"Find y-intercept (y=mx+b)", inputs:["m","x","y"]},
+        factor: {label:"Factor Quadratic (ax^2+bx+c)", inputs:["a","b","c"]},
+        dist: {label:"Distance between Points", inputs:["x1","y1","x2","y2"]},
+        midpoint: {label:"Midpoint between Points", inputs:["x1","y1","x2","y2"]},
+        abs: {label:"Solve |x|=a", inputs:["a"]},
+        exp: {label:"Evaluate Exponential", inputs:["base","exp"]},
+        percent: {label:"Percentage Change", inputs:["original","new"]},
+        inequality: {label:"Solve Inequality ax+b<c", inputs:["a","b","c"]},
+        avg: {label:"Average of Numbers (comma-separated)", inputs:["numbers"]},
+        seq: {label:"Arithmetic nth Term", inputs:["a1","d","n"]},
+        sumseq: {label:"Arithmetic Series Sum", inputs:["a1","d","n"]}
+      },
+      alg2: {
+        exp: {label:"Exponential Expression", inputs:["base","exp"]},
+        log: {label:"Logarithm log_b(x)", inputs:["base","value"]},
+        geoSeq: {label:"Geometric nth Term", inputs:["a1","r","n"]},
+        geoSum: {label:"Geometric Series Sum", inputs:["a1","r","n"]},
+        arithSeq: {label:"Arithmetic nth Term", inputs:["a1","d","n"]},
+        arithSum: {label:"Arithmetic Series Sum", inputs:["a1","d","n"]},
+        complexAdd: {label:"Complex Add (a+bi)+(c+di)", inputs:["a","b","c","d"]},
+        complexMul: {label:"Complex Multiply", inputs:["a","b","c","d"]},
+        trig: {label:"Trig Values (rad)", inputs:["angle"]},
+        trigDeg: {label:"Trig Values (deg)", inputs:["angle"]},
+        matrix2: {label:"2x2 Determinant", inputs:["a","b","c","d"]},
+        matrix3: {label:"3x3 Determinant", inputs:["a11","a12","a13","a21","a22","a23","a31","a32","a33"]},
+        poly: {label:"Evaluate Polynomial", inputs:["coefficients(comma)","x"]},
+        quadVertex: {label:"Vertex of Quadratic ax^2+bx+c", inputs:["a","b","c"]},
+        binomial: {label:"Binomial Expansion (a+b)^n (n small)", inputs:["a","b","n"]}
+      },
+      geo: {
+        dist: {label:"Distance Formula", inputs:["x1","y1","x2","y2"]},
+        midpoint: {label:"Midpoint Formula", inputs:["x1","y1","x2","y2"]},
+        areaCircle: {label:"Area of Circle", inputs:["r"]},
+        circCircle: {label:"Circumference of Circle", inputs:["r"]},
+        areaTriangle: {label:"Area Triangle (Heron)", inputs:["a","b","c"]},
+        rightTri: {label:"Right Triangle Hypotenuse", inputs:["a","b"]},
+        volSphere: {label:"Sphere Volume", inputs:["r"]},
+        saSphere: {label:"Sphere Surface Area", inputs:["r"]},
+        volCylinder: {label:"Cylinder Volume", inputs:["r","h"]},
+        saCylinder: {label:"Cylinder Surface Area", inputs:["r","h"]},
+        volCone: {label:"Cone Volume", inputs:["r","h"]},
+        saCone: {label:"Cone Surface Area", inputs:["r","h","s (slant)"]},
+        volPrism: {label:"Rectangular Prism Volume", inputs:["l","w","h"]},
+        saPrism: {label:"Rectangular Prism Surface Area", inputs:["l","w","h"]},
+        pythag: {label:"Pythagorean Theorem", inputs:["a","b"]}
+      }
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+
+    // 🔹 Load operations
+    topicSelect.addEventListener("change", () => {
+      const topic = topicSelect.value;
+      operationSelect.innerHTML = "<option value=''>-- Select Operation --</option>";
+      inputsDiv.innerHTML = "";
+      outputDiv.textContent = "Results will appear here...";
+      if (operations[topic]) {
+        Object.entries(operations[topic]).forEach(([key, val]) => {
+          const opt = document.createElement("option");
+          opt.value = key;
+          opt.textContent = val.label;
+          operationSelect.appendChild(opt);
+        });
+      }
+    });
+
+    // 🔹 Generate input fields
+    operationSelect.addEventListener("change", () => {
+      inputsDiv.innerHTML = "";
+      const topic = topicSelect.value;
+      const op = operationSelect.value;
+      if (operations[topic] && operations[topic][op]) {
+        operations[topic][op].inputs.forEach(inp => {
+          const lbl = document.createElement("label");
+          lbl.textContent = inp + ":";
+          const input = document.createElement("input");
+          input.type = "text"; input.id = inp;
+          inputsDiv.appendChild(lbl);
+          inputsDiv.appendChild(input);
+        });
+      }
+    });
+
+    // 🔹 Solve
+    document.getElementById("solveBtn").addEventListener("click", () => {
+      const topic = topicSelect.value;
+      const op = operationSelect.value;
+      if (!operations[topic] || !operations[topic][op]) return;
+      const vals = {};
+      operations[topic][op].inputs.forEach(i => {
+        vals[i] = parseFloat(document.getElementById(i).value);
+      });
+
+      let res = "";
+      try {
+        // Algebra 1
+        if (topic==="alg1"){
+          switch(op){
+            case "linear": res="x="+(-vals.b/vals.a); break;
+            case "system": {
+              let det=vals.a1*vals.b2-vals.a2*vals.b1;
+              res=(det===0?"No unique solution":
+                `x=${(vals.c1*vals.b2-vals.c2*vals.b1)/det}, y=${(vals.a1*vals.c2-vals.a2*vals.c1)/det}`);
+              break;
+            }
+            case "quadratic": {
+              let d=vals.b**2-4*vals.a*vals.c;
+              res=d<0?`Complex roots: ${-vals.b/(2*vals.a)} ± ${Math.sqrt(-d)/(2*vals.a)}i`:
+                `Roots: ${(-vals.b+Math.sqrt(d))/(2*vals.a)}, ${(-vals.b-Math.sqrt(d))/(2*vals.a)}`;
+              break;
+            }
+            case "slope": res="Slope="+((vals.y2-vals.y1)/(vals.x2-vals.x1)); break;
+            case "intercept": res="b="+(vals.y-vals.m*vals.x); break;
+            case "factor": {
+              let d=vals.b**2-4*vals.a*vals.c;
+              if(d<0) res="No real factors";
+              else {
+                let r1=(-vals.b+Math.sqrt(d))/(2*vals.a);
+                let r2=(-vals.b-Math.sqrt(d))/(2*vals.a);
+                res=`Factors: (x-${r1})(x-${r2})`;
+              }
+              break;
+            }
+            case "dist": res="Distance="+Math.hypot(vals.x2-vals.x1,vals.y2-vals.y1); break;
+            case "midpoint": res=`Midpoint=(${(vals.x1+vals.x2)/2}, ${(vals.y1+vals.y2)/2})`; break;
+            case "abs": res=`x=${vals.a} or x=${-vals.a}`; break;
+            case "exp": res=`Result=${vals.base**vals.exp}`; break;
+            case "percent": res=`Change=${((vals.new-vals.original)/vals.original*100).toFixed(2)}%`; break;
+            case "inequality": res=`x < ${(vals.c-vals.b)/vals.a}`; break;
+            case "avg": {
+              let nums=document.getElementById("numbers").value.split(",").map(Number);
+              res="Average="+(nums.reduce((a,b)=>a+b,0)/nums.length);
+              break;
+            }
+            case "seq": res=`nth term=${vals.a1+(vals.n-1)*vals.d}`; break;
+            case "sumseq": res=`Sum=${(vals.n/2)*(2*vals.a1+(vals.n-1)*vals.d)}`; break;
+          }
+        }
+        // Algebra 2
+        if (topic==="alg2"){
+          switch(op){
+            case "exp": res=vals.base**vals.exp; break;
+            case "log": res=Math.log(vals.value)/Math.log(vals.base); break;
+            case "geoSeq": res=vals.a1*vals.r**(vals.n-1); break;
+            case "geoSum": res=vals.r===1?vals.a1*vals.n:vals.a1*(1-vals.r**vals.n)/(1-vals.r); break;
+            case "arithSeq": res=vals.a1+(vals.n-1)*vals.d; break;
+            case "arithSum": res=(vals.n/2)*(2*vals.a1+(vals.n-1)*vals.d); break;
+            case "complexAdd": res=`${vals.a+vals.c}+${vals.b+vals.d}i`; break;
+            case "complexMul": res=`${vals.a*vals.c-vals.b*vals.d}+${vals.a*vals.d+vals.b*vals.c}i`; break;
+            case "trig": res=`sin=${Math.sin(vals.angle)}, cos=${Math.cos(vals.angle)}, tan=${Math.tan(vals.angle)}`; break;
+            case "trigDeg": {
+              let rad=vals.angle*Math.PI/180;
+              res=`sin=${Math.sin(rad)}, cos=${Math.cos(rad)}, tan=${Math.tan(rad)}`;
+              break;
+            }
+            case "matrix2": res=vals.a*vals.d-vals.b*vals.c; break;
+            case "matrix3": res=vals.a11*(vals.a22*vals.a33-vals.a23*vals.a32)-vals.a12*(vals.a21*vals.a33-vals.a23*vals.a31)+vals.a13*(vals.a21*vals.a32-vals.a22*vals.a31); break;
+            case "poly": {
+              let coeffs=document.getElementById("coefficients(comma)").value.split(",").map(Number);
+              let x=vals.x;
+              res="P(x)="+coeffs.reduce((acc,c,i)=>acc+c*x**(coeffs.length-1-i),0);
+              break;
+            }
+            case "quadVertex": res=`Vertex=(${ -vals.b/(2*vals.a)}, ${vals.c-vals.b**2/(4*vals.a)})`; break;
+            case "binomial": {
+              let resArr=[];
+              for(let k=0;k<=vals.n;k++){
+                let coeff=factorial(vals.n)/(factorial(k)*factorial(vals.n-k));
+                resArr.push(`${coeff}*${vals.a**(vals.n-k)}*${vals.b**k}`);
+              }
+              res=resArr.join(" + ");
+              break;
+            }
+          }
+        }
+        // Geometry
+        if (topic==="geo"){
+          switch(op){
+            case "dist": res=Math.hypot(vals.x2-vals.x1,vals.y2-vals.y1); break;
+            case "midpoint": res=`(${(vals.x1+vals.x2)/2}, ${(vals.y1+vals.y2)/2})`; break;
+            case "areaCircle": res=Math.PI*vals.r**2; break;
+            case "circCircle": res=2*Math.PI*vals.r; break;
+            case "areaTriangle": {
+              let s=(vals.a+vals.b+vals.c)/2;
+              res=Math.sqrt(s*(s-vals.a)*(s-vals.b)*(s-vals.c)); break;
+            }
+            case "rightTri": res=Math.hypot(vals.a,vals.b); break;
+            case "volSphere": res=(4/3)*Math.PI*vals.r**3; break;
+            case "saSphere": res=4*Math.PI*vals.r**2; break;
+            case "volCylinder": res=Math.PI*vals.r**2*vals.h; break;
+            case "saCylinder": res=2*Math.PI*vals.r*(vals.r+vals.h); break;
+            case "volCone": res=(1/3)*Math.PI*vals.r**2*vals.h; break;
+            case "saCone": res=Math.PI*vals.r*(vals.r+vals.s); break;
+            case "volPrism": res=vals.l*vals.w*vals.h; break;
+            case "saPrism": res=2*(vals.l*vals.w+vals.l*vals.h+vals.w*vals.h); break;
+            case "pythag": res=Math.hypot(vals.a,vals.b); break;
+          }
+        }
+      } catch(e){ res="Error in calculation"; }
+      outputDiv.textContent="Result: "+res;
+    });
+
+    function factorial(n){return n<=1?1:n*factorial(n-1);}
   </script>
 </body>
 </html>
+
