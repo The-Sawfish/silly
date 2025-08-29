@@ -2,310 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Advanced Math Assistant</title>
+  <title>C++ Calculator Example</title>
+  <!-- Load Prism.js for syntax highlighting -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
   <style>
     body {
-      margin: 0;
-      font-family: "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .app {
-      background: rgba(255,255,255,0.05);
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-      width: 700px;
-      text-align: center;
-      backdrop-filter: blur(10px);
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      padding: 20px;
     }
     h1 {
-      font-size: 2em;
-      margin-bottom: 20px;
-      background: linear-gradient(90deg, #00c6ff, #0072ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    select, input, button {
-      width: 90%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 12px;
-      border: none;
-      font-size: 1em;
-    }
-    select, input {
-      background: #eee;
       color: #333;
     }
-    button {
-      background: #00c6ff;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #0072ff;
-    }
-    #output {
-      margin-top: 20px;
-      font-size: 1.1em;
+    pre {
+      border-radius: 8px;
       padding: 15px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 12px;
-      min-height: 40px;
-      white-space: pre-wrap;
-      text-align: left;
-    }
-    label {
-      display: block;
-      margin: 5px 0 2px;
-      text-align: left;
-      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <h1>Advanced Math Assistant</h1>
-    
-    <select id="topic">
-      <option value="">-- Select Topic --</option>
-      <option value="alg1">Algebra 1</option>
-      <option value="alg2">Algebra 2</option>
-      <option value="geo">Geometry</option>
-    </select>
-    
-    <select id="operation">
-      <option value="">-- Select Operation --</option>
-    </select>
+  <h1>Simple C++ Calculator</h1>
+  <p>Here’s a basic C++ program that performs addition, subtraction, multiplication, and division:</p>
 
-    <div id="inputs"></div>
-    <button id="solveBtn">Solve</button>
+  <pre><code class="language-cpp">
+#include &lt;iostream&gt;
+using namespace std;
 
-    <div id="output">Results will appear here...</div>
-  </div>
+int main() {
+    char op;
+    double num1, num2;
 
-  <script>
-    const topicSelect = document.getElementById("topic");
-    const operationSelect = document.getElementById("operation");
-    const inputsDiv = document.getElementById("inputs");
-    const outputDiv = document.getElementById("output");
+    cout &lt;&lt; "Enter operator (+, -, *, /): ";
+    cin &gt;&gt; op;
 
-    // 🔹 Define operations
-    const operations = {
-      alg1: {
-        linear: {label:"Solve Linear (ax+b=0)", inputs:["a","b"]},
-        system: {label:"Solve 2x2 System", inputs:["a1","b1","c1","a2","b2","c2"]},
-        quadratic: {label:"Quadratic Formula", inputs:["a","b","c"]},
-        slope: {label:"Slope from Two Points", inputs:["x1","y1","x2","y2"]},
-        intercept: {label:"Find y-intercept (y=mx+b)", inputs:["m","x","y"]},
-        factor: {label:"Factor Quadratic (ax^2+bx+c)", inputs:["a","b","c"]},
-        dist: {label:"Distance between Points", inputs:["x1","y1","x2","y2"]},
-        midpoint: {label:"Midpoint between Points", inputs:["x1","y1","x2","y2"]},
-        abs: {label:"Solve |x|=a", inputs:["a"]},
-        exp: {label:"Evaluate Exponential", inputs:["base","exp"]},
-        percent: {label:"Percentage Change", inputs:["original","new"]},
-        inequality: {label:"Solve Inequality ax+b<c", inputs:["a","b","c"]},
-        avg: {label:"Average of Numbers (comma-separated)", inputs:["numbers"]},
-        seq: {label:"Arithmetic nth Term", inputs:["a1","d","n"]},
-        sumseq: {label:"Arithmetic Series Sum", inputs:["a1","d","n"]}
-      },
-      alg2: {
-        exp: {label:"Exponential Expression", inputs:["base","exp"]},
-        log: {label:"Logarithm log_b(x)", inputs:["base","value"]},
-        geoSeq: {label:"Geometric nth Term", inputs:["a1","r","n"]},
-        geoSum: {label:"Geometric Series Sum", inputs:["a1","r","n"]},
-        arithSeq: {label:"Arithmetic nth Term", inputs:["a1","d","n"]},
-        arithSum: {label:"Arithmetic Series Sum", inputs:["a1","d","n"]},
-        complexAdd: {label:"Complex Add (a+bi)+(c+di)", inputs:["a","b","c","d"]},
-        complexMul: {label:"Complex Multiply", inputs:["a","b","c","d"]},
-        trig: {label:"Trig Values (rad)", inputs:["angle"]},
-        trigDeg: {label:"Trig Values (deg)", inputs:["angle"]},
-        matrix2: {label:"2x2 Determinant", inputs:["a","b","c","d"]},
-        matrix3: {label:"3x3 Determinant", inputs:["a11","a12","a13","a21","a22","a23","a31","a32","a33"]},
-        poly: {label:"Evaluate Polynomial", inputs:["coefficients(comma)","x"]},
-        quadVertex: {label:"Vertex of Quadratic ax^2+bx+c", inputs:["a","b","c"]},
-        binomial: {label:"Binomial Expansion (a+b)^n (n small)", inputs:["a","b","n"]}
-      },
-      geo: {
-        dist: {label:"Distance Formula", inputs:["x1","y1","x2","y2"]},
-        midpoint: {label:"Midpoint Formula", inputs:["x1","y1","x2","y2"]},
-        areaCircle: {label:"Area of Circle", inputs:["r"]},
-        circCircle: {label:"Circumference of Circle", inputs:["r"]},
-        areaTriangle: {label:"Area Triangle (Heron)", inputs:["a","b","c"]},
-        rightTri: {label:"Right Triangle Hypotenuse", inputs:["a","b"]},
-        volSphere: {label:"Sphere Volume", inputs:["r"]},
-        saSphere: {label:"Sphere Surface Area", inputs:["r"]},
-        volCylinder: {label:"Cylinder Volume", inputs:["r","h"]},
-        saCylinder: {label:"Cylinder Surface Area", inputs:["r","h"]},
-        volCone: {label:"Cone Volume", inputs:["r","h"]},
-        saCone: {label:"Cone Surface Area", inputs:["r","h","s (slant)"]},
-        volPrism: {label:"Rectangular Prism Volume", inputs:["l","w","h"]},
-        saPrism: {label:"Rectangular Prism Surface Area", inputs:["l","w","h"]},
-        pythag: {label:"Pythagorean Theorem", inputs:["a","b"]}
-      }
-    };
+    cout &lt;&lt; "Enter two numbers: ";
+    cin &gt;&gt; num1 &gt;&gt; num2;
 
-    // 🔹 Load operations
-    topicSelect.addEventListener("change", () => {
-      const topic = topicSelect.value;
-      operationSelect.innerHTML = "<option value=''>-- Select Operation --</option>";
-      inputsDiv.innerHTML = "";
-      outputDiv.textContent = "Results will appear here...";
-      if (operations[topic]) {
-        Object.entries(operations[topic]).forEach(([key, val]) => {
-          const opt = document.createElement("option");
-          opt.value = key;
-          opt.textContent = val.label;
-          operationSelect.appendChild(opt);
-        });
-      }
-    });
+    switch(op) {
+        case '+':
+            cout &lt;&lt; num1 + num2;
+            break;
+        case '-':
+            cout &lt;&lt; num1 - num2;
+            break;
+        case '*':
+            cout &lt;&lt; num1 * num2;
+            break;
+        case '/':
+            if(num2 != 0)
+                cout &lt;&lt; num1 / num2;
+            else
+                cout &lt;&lt; "Error! Division by zero.";
+            break;
+        default:
+            cout &lt;&lt; "Invalid operator";
+    }
 
-    // 🔹 Generate input fields
-    operationSelect.addEventListener("change", () => {
-      inputsDiv.innerHTML = "";
-      const topic = topicSelect.value;
-      const op = operationSelect.value;
-      if (operations[topic] && operations[topic][op]) {
-        operations[topic][op].inputs.forEach(inp => {
-          const lbl = document.createElement("label");
-          lbl.textContent = inp + ":";
-          const input = document.createElement("input");
-          input.type = "text"; input.id = inp;
-          inputsDiv.appendChild(lbl);
-          inputsDiv.appendChild(input);
-        });
-      }
-    });
-
-    // 🔹 Solve
-    document.getElementById("solveBtn").addEventListener("click", () => {
-      const topic = topicSelect.value;
-      const op = operationSelect.value;
-      if (!operations[topic] || !operations[topic][op]) return;
-      const vals = {};
-      operations[topic][op].inputs.forEach(i => {
-        vals[i] = parseFloat(document.getElementById(i).value);
-      });
-
-      let res = "";
-      try {
-        // Algebra 1
-        if (topic==="alg1"){
-          switch(op){
-            case "linear": res="x="+(-vals.b/vals.a); break;
-            case "system": {
-              let det=vals.a1*vals.b2-vals.a2*vals.b1;
-              res=(det===0?"No unique solution":
-                `x=${(vals.c1*vals.b2-vals.c2*vals.b1)/det}, y=${(vals.a1*vals.c2-vals.a2*vals.c1)/det}`);
-              break;
-            }
-            case "quadratic": {
-              let d=vals.b**2-4*vals.a*vals.c;
-              res=d<0?`Complex roots: ${-vals.b/(2*vals.a)} ± ${Math.sqrt(-d)/(2*vals.a)}i`:
-                `Roots: ${(-vals.b+Math.sqrt(d))/(2*vals.a)}, ${(-vals.b-Math.sqrt(d))/(2*vals.a)}`;
-              break;
-            }
-            case "slope": res="Slope="+((vals.y2-vals.y1)/(vals.x2-vals.x1)); break;
-            case "intercept": res="b="+(vals.y-vals.m*vals.x); break;
-            case "factor": {
-              let d=vals.b**2-4*vals.a*vals.c;
-              if(d<0) res="No real factors";
-              else {
-                let r1=(-vals.b+Math.sqrt(d))/(2*vals.a);
-                let r2=(-vals.b-Math.sqrt(d))/(2*vals.a);
-                res=`Factors: (x-${r1})(x-${r2})`;
-              }
-              break;
-            }
-            case "dist": res="Distance="+Math.hypot(vals.x2-vals.x1,vals.y2-vals.y1); break;
-            case "midpoint": res=`Midpoint=(${(vals.x1+vals.x2)/2}, ${(vals.y1+vals.y2)/2})`; break;
-            case "abs": res=`x=${vals.a} or x=${-vals.a}`; break;
-            case "exp": res=`Result=${vals.base**vals.exp}`; break;
-            case "percent": res=`Change=${((vals.new-vals.original)/vals.original*100).toFixed(2)}%`; break;
-            case "inequality": res=`x < ${(vals.c-vals.b)/vals.a}`; break;
-            case "avg": {
-              let nums=document.getElementById("numbers").value.split(",").map(Number);
-              res="Average="+(nums.reduce((a,b)=>a+b,0)/nums.length);
-              break;
-            }
-            case "seq": res=`nth term=${vals.a1+(vals.n-1)*vals.d}`; break;
-            case "sumseq": res=`Sum=${(vals.n/2)*(2*vals.a1+(vals.n-1)*vals.d)}`; break;
-          }
-        }
-        // Algebra 2
-        if (topic==="alg2"){
-          switch(op){
-            case "exp": res=vals.base**vals.exp; break;
-            case "log": res=Math.log(vals.value)/Math.log(vals.base); break;
-            case "geoSeq": res=vals.a1*vals.r**(vals.n-1); break;
-            case "geoSum": res=vals.r===1?vals.a1*vals.n:vals.a1*(1-vals.r**vals.n)/(1-vals.r); break;
-            case "arithSeq": res=vals.a1+(vals.n-1)*vals.d; break;
-            case "arithSum": res=(vals.n/2)*(2*vals.a1+(vals.n-1)*vals.d); break;
-            case "complexAdd": res=`${vals.a+vals.c}+${vals.b+vals.d}i`; break;
-            case "complexMul": res=`${vals.a*vals.c-vals.b*vals.d}+${vals.a*vals.d+vals.b*vals.c}i`; break;
-            case "trig": res=`sin=${Math.sin(vals.angle)}, cos=${Math.cos(vals.angle)}, tan=${Math.tan(vals.angle)}`; break;
-            case "trigDeg": {
-              let rad=vals.angle*Math.PI/180;
-              res=`sin=${Math.sin(rad)}, cos=${Math.cos(rad)}, tan=${Math.tan(rad)}`;
-              break;
-            }
-            case "matrix2": res=vals.a*vals.d-vals.b*vals.c; break;
-            case "matrix3": res=vals.a11*(vals.a22*vals.a33-vals.a23*vals.a32)-vals.a12*(vals.a21*vals.a33-vals.a23*vals.a31)+vals.a13*(vals.a21*vals.a32-vals.a22*vals.a31); break;
-            case "poly": {
-              let coeffs=document.getElementById("coefficients(comma)").value.split(",").map(Number);
-              let x=vals.x;
-              res="P(x)="+coeffs.reduce((acc,c,i)=>acc+c*x**(coeffs.length-1-i),0);
-              break;
-            }
-            case "quadVertex": res=`Vertex=(${ -vals.b/(2*vals.a)}, ${vals.c-vals.b**2/(4*vals.a)})`; break;
-            case "binomial": {
-              let resArr=[];
-              for(let k=0;k<=vals.n;k++){
-                let coeff=factorial(vals.n)/(factorial(k)*factorial(vals.n-k));
-                resArr.push(`${coeff}*${vals.a**(vals.n-k)}*${vals.b**k}`);
-              }
-              res=resArr.join(" + ");
-              break;
-            }
-          }
-        }
-        // Geometry
-        if (topic==="geo"){
-          switch(op){
-            case "dist": res=Math.hypot(vals.x2-vals.x1,vals.y2-vals.y1); break;
-            case "midpoint": res=`(${(vals.x1+vals.x2)/2}, ${(vals.y1+vals.y2)/2})`; break;
-            case "areaCircle": res=Math.PI*vals.r**2; break;
-            case "circCircle": res=2*Math.PI*vals.r; break;
-            case "areaTriangle": {
-              let s=(vals.a+vals.b+vals.c)/2;
-              res=Math.sqrt(s*(s-vals.a)*(s-vals.b)*(s-vals.c)); break;
-            }
-            case "rightTri": res=Math.hypot(vals.a,vals.b); break;
-            case "volSphere": res=(4/3)*Math.PI*vals.r**3; break;
-            case "saSphere": res=4*Math.PI*vals.r**2; break;
-            case "volCylinder": res=Math.PI*vals.r**2*vals.h; break;
-            case "saCylinder": res=2*Math.PI*vals.r*(vals.r+vals.h); break;
-            case "volCone": res=(1/3)*Math.PI*vals.r**2*vals.h; break;
-            case "saCone": res=Math.PI*vals.r*(vals.r+vals.s); break;
-            case "volPrism": res=vals.l*vals.w*vals.h; break;
-            case "saPrism": res=2*(vals.l*vals.w+vals.l*vals.h+vals.w*vals.h); break;
-            case "pythag": res=Math.hypot(vals.a,vals.b); break;
-          }
-        }
-      } catch(e){ res="Error in calculation"; }
-      outputDiv.textContent="Result: "+res;
-    });
-
-    function factorial(n){return n<=1?1:n*factorial(n-1);}
-  </script>
+    return 0;
+}
+  </code></pre>
 </body>
 </html>
-
