@@ -2,66 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>C++ Calculator Example</title>
-  <!-- Prism.js for syntax highlighting -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f9;
-      padding: 20px;
-    }
-    h1 {
-      color: #333;
-    }
-    pre {
-      border-radius: 8px;
-      padding: 15px;
-    }
-  </style>
+  <title>C++ Calculator Code</title>
 </head>
 <body>
-  <h1>Simple C++ Calculator</h1>
-  <p>Here’s a basic C++ program that performs addition, subtraction, multiplication, and division:</p>
+<h1>Simple C++ Calculator</h1>
 
-  <pre><code class="language-cpp">
-#include &lt;iostream&gt;
+<xmp>
+#include <iostream>
 using namespace std;
 
 int main() {
     char op;
     double num1, num2;
 
-    cout &lt;&lt; "Enter operator (+, -, *, /): ";
-    cin &gt;&gt; op;
+    cout << "Enter operator (+, -, *, /): ";
+    cin >> op;
 
-    cout &lt;&lt; "Enter two numbers: ";
-    cin &gt;&gt; num1 &gt;&gt; num2;
+    cout << "Enter two numbers: ";
+    cin >> num1 >> num2;
 
     switch(op) {
-        case '+':
-            cout &lt;&lt; num1 + num2;
+        case '+': cout << num1 + num2; break;
+        case '-': cout << num1 - num2; break;
+        case '*': cout << num1 * num2; break;
+        case '/': 
+            if(num2 != 0) cout << num1 / num2;
+            else cout << "Error! Division by zero.";
             break;
-        case '-':
-            cout &lt;&lt; num1 - num2;
-            break;
-        case '*':
-            cout &lt;&lt; num1 * num2;
-            break;
-        case '/':
-            if(num2 != 0)
-                cout &lt;&lt; num1 / num2;
-            else
-                cout &lt;&lt; "Error! Division by zero.";
-            break;
-        default:
-            cout &lt;&lt; "Invalid operator";
+        default: cout << "Invalid operator";
     }
-
     return 0;
 }
-  </code></pre>
+</xmp>
+
 </body>
 </html>
