@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blank Page</title>
+  <meta charset="UTF-8">
+  <title>40 Ads Page</title>
 </head>
 <body>
-    <!-- Content will go here -->
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
-  <script type='text/javascript' src='//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js'></script>
+  <h1>40 Ads Display</h1>
+
+  <div id="ads-container"></div>
+
+  <script>
+    const adsContainer = document.getElementById("ads-container");
+
+    for (let i = 1; i <= 40; i++) {
+      const containerId = "container-d4340154bc73718f92bac0614d8b370f-" + i;
+
+      // create container
+      const adDiv = document.createElement("div");
+      adDiv.id = containerId;
+      adDiv.className = "ad";
+      adsContainer.appendChild(adDiv);
+
+      // create script tag for this ad
+      const script = document.createElement("script");
+      script.async = true;
+      script.setAttribute("data-cfasync", "false");
+      script.src = "//pl27673631.revenuecpmgate.com/d4340154bc73718f92bac0614d8b370f/invoke.js";
+      adsContainer.appendChild(script);
+    }
+  </script>
 </body>
 </html>
