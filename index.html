@@ -2,22 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>40 Ad Page</title>
+  <title>Ad Click Page</title>
+  <style>
+    body {
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background: #0078ff;
+      color: white;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #005fcc;
+    }
+  </style>
 </head>
 <body>
-  <script async="async" data-cfasync="false" src="//pl27674162.revenuecpmgate.com/51795527679045767731bf787eb6883f/invoke.js"></script>
-  <div id="container-51795527679045767731bf787eb6883f"></div>
+  <button onclick="openAd()">Click Ad</button>
 
-  <script type="text/javascript">
-	atOptions = {
-		'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-		'format' : 'iframe',
-		'height' : 60,
-		'width' : 468,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-  
+  <script>
+    function openAd() {
+      // Open ad link in the current tab
+      window.location.href = "https://www.revenuecpmgate.com/mcq3yey8r?key=ee90e399d7947cb8158f0c6e3563476d";
+      
+      // After 2 seconds, return to home page
+      setTimeout(() => {
+        window.location.href = window.location.origin + window.location.pathname;
+      }, 1000);
+    }
+  </script>
 </body>
 </html>
